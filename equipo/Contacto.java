@@ -1,47 +1,56 @@
+/*
+ * Asignatura: POO (Programación Orientada a Objetos)
+ * Unidad 3: Proyecto en equipo
+ * Docente: María Lucía Barrón Estrada
+ * -- Integrantes: -- 
+ * Luis Angel Vea Chairez
+ * Diego Antonio López Olivas
+ * Didier Montoya Samaniego
+ */
 package equipo;
 import java.util.ArrayList;
 import java.util.List;
 //Clase Contacto extiende Persona
-
-//TODO: Eliminar el main
 public class Contacto extends Persona {
 	//Atributos
-	private String email;
-	private ArrayList<Telefono> telefonos;
+	private String correo;
+	private List<Telefono> telefonos;
 	
 	//Getters y setters
-	public String getEmail() {
-		return email;
+	public String getCorreo() {
+		return correo;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCorreo(String correo) {
+		String regex = "^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$";
+		if (correo != null && correo.matches(regex)) { this.correo = correo; } 
+		else { System.out.println("-- ERROR: CORREO INVÁLIDO --"); }
 	}
 	public List<Telefono> getTelefonos() {
 		return telefonos;
 	}
-	public void setTelefonos(ArrayList<Telefono> telefonos) {
-		this.telefonos = telefonos;
+	public void setTelefonos(List<Telefono> telefonos) {
+		this.telefonos = (telefonos != null) ? telefonos : new ArrayList<>();
 	}
 	//
 	
 	//Constructor
-	public Contacto(String nombre, String apellidos, String fechaNacimiento, char sexo, String email,
+	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
 			List<Telefono> telefonos) {
-		super(nombre, apellidos, fechaNacimiento, sexo);
-		this.email = email;
-		this.telefonos = new ArrayList<>();	
+		super(nombre, apellidos, alias, sexo);
+		setCorreo(correo);
+		setTelefonos(telefonos);	
 	}
 	
 	//Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
 	public void agregarTelefono(Telefono t) {
 		if (t != null) { this.telefonos.add(t); 
 		} else {
-			System.out.println("-- ERROR: ");
+			System.out.println("-- ERROR: ENTRADA VACÍA --");
 		}
 	} 
 	
 	//Método para listar teléfonos del Contacto
-	public void listarContactos() {
+	public void obtenerListaDeTelefonos() {
 		System.out.println("Teléfonos de " + nombre + ": ");
 		if (telefonos.isEmpty()) {
 			System.out.println("-- No hay teléfonos registrados --");
