@@ -57,4 +57,8 @@ public class Telefono {
 	public String toString() {
 		return String.format("[%c](+%s)%s", tipo, prefijo, numTel);
 	}
+	/*
+	public static void main(String[] args) {
+		Telefono t1 = new Telefono('m', '');
+	}*/
 }

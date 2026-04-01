@@ -70,4 +70,27 @@ public class Contacto extends Persona {
 			System.out.println("-- ERROR: El teléfono seleccionado no existe --");
 		}
 	}
+	
+	// Método toString
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int contador = 0;
+		for (Telefono t : telefonos) {
+			if (telefonos.size() > 1 && contador != 0 && contador != telefonos.size()) {
+				sb.append(", " + t.getNumTel());				
+			} else {
+				sb.append(t.getNumTel());								
+			}
+			contador++;
+		}
+		return super.toString() + "| Teléfono(s): " + sb;
+	}
+	
+	// main para probar
+	public static void main(String[] args) {
+		Telefono t1 = new Telefono('m', "52", "6671354895");
+		Telefono t2 = new Telefono('m', "52", "1467871357");
+		Contacto c1 = new Contacto("Luis", "Vea", "luve", 'M', "luve@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
+		System.out.println(c1);
+	}
 }
