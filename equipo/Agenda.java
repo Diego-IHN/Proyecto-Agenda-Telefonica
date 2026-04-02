@@ -20,67 +20,6 @@ public class Agenda {
 	public Agenda(ArrayList<Contacto> listaPredeterminada) {
 		this.agenda = listaPredeterminada;
 	}
-	//c) Método para imprimir el contacto por tipo de teléfono
-	public void imprimirPorTipoTelefono(char tipoBuscado) {
-	    boolean encontrado = false;
-	    for (Contacto c : agenda) {
-	        for (Telefono t : c.getTelefonos()) {
-	            if (t.getTipo() == tipoBuscado) {
-	                System.out.println(c.toString());
-	                encontrado = true;
-	                break;
-	            }
-	        }
-	    }
-	    // En caso que no se encuentre ese tipo de teléfono
-	    if (!encontrado) {
-	        System.out.println("No hay contactos con ese tipo de teléfono.");
-	    }
-	}
-	//d) Método para cambiar el correo de un contacto
-	public void cambiarCorreo(String dato, String nuevoCorreo) {
-	    boolean encontrado = false;
-	    // Primero se busca el contacto y al encontrarse se le cambia el correo
-	    for (Contacto c : agenda) {
-	        if (c.getNombre().equalsIgnoreCase(dato) || 
-	            c.getAlias().equalsIgnoreCase(dato)) {
-	            c.setCorreo(nuevoCorreo);
-	            System.out.println("Correo agregado correctamente.");
-	            encontrado = true;
-	            break;
-	        }
-	    }
-	    if (!encontrado) {
-	        System.out.println("No se encontró el contacto.");
-	    }
-	}
-	//h) Método para consultar a una persona y obtener sus datos
-	public void consultarPersona(String dato) {
-	    boolean encontrado = false;
-	    // Se busca y se imprime el toString del contacto, el cual incluye
-	    // el toString de persona y el toString de sus teléfonos
-	    for (Contacto c : agenda) {
-	        if (c.getNombre().equalsIgnoreCase(dato) || 
-	            c.getAlias().equalsIgnoreCase(dato)) {
-	            System.out.println(c.toString());
-	            encontrado = true;
-	            break;
-	        }
-	    }
-	    if (!encontrado) {
-	        System.out.println("Persona no encontrada.");
-	    }
-	}
-	//Método auxiliar para validar un alias dentro de la lista de contactos
-	public boolean validarAlias(String alias) {
-		for (Contacto c : agenda) {
-			if (c.getAlias().equalsIgnoreCase(alias.trim())){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	//b) Método para obtener el listado de contactos por tipo de teléfono
 	public void imprimirListadoDeContactosPorTipoDeTelefono(char tipoTel) {
 		for (Contacto c : agenda) {
@@ -100,6 +39,43 @@ public class Agenda {
 		}
 	}
 	
+	//c) Método para agregar una Persona a la agenda
+	
+	//d) Método para cambiar el correo de un contacto
+	public void cambiarCorreo(String dato, String nuevoCorreo) {
+	    boolean encontrado = false;
+	    // Primero se busca el contacto y al encontrarse se le cambia el correo
+	    for (Contacto c : agenda) {
+	        if (c.getNombre().equalsIgnoreCase(dato) || 
+	            c.getAlias().equalsIgnoreCase(dato)) {
+	            c.setCorreo(nuevoCorreo);
+	            System.out.println("Correo agregado correctamente.");
+	            encontrado = true;
+	            break;
+	        }
+	    }
+	    if (!encontrado) {
+	        System.out.println("No se encontró el contacto.");
+	    }
+	}
+	//Método auxiliar para validar un alias dentro de la lista de contactos
+	public boolean validarAlias(String alias) {
+		for (Contacto c : agenda) {
+			if (c.getAlias().equalsIgnoreCase(alias.trim())){
+				return true;
+			}
+		}
+		return false;
+	}
+	//Método auxiliar para validar un nombre dentro de la lista de contactos
+	public boolean validarNombre(String nombre) {
+		for (Contacto c : agenda) {
+			if (c.getNombre().equalsIgnoreCase(nombre.trim())){
+				return true;
+			}
+		}
+		return false;
+	}
 	//e) Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
 		public void agregarTelefonoAContacto(String alias, Telefono t) {
 			boolean encontrado = false;
@@ -129,17 +105,18 @@ public class Agenda {
 			}
 			// Se elimina de la agenda usando el método remove de los ArrayList
 			agenda.remove(index);
+			System.out.println("-- Contacto eliminado --");
 		}
 	
 	//g) Método para eliminar los teléfonos de un contacto
-	public void eliminarTelefonoContacto(String correo, String alias, Telefono t1) {
+	public void eliminarTelefonoContacto(String alias, Telefono t1) {
 		// Dos índices requeridos para claridad
 		int indexContacto = 0;
 		int indexTelefono = 0;
 		for (Contacto c : agenda) {
 			// Se busca el correo iterando en la agenda y si se encuentra 
-			// se termina el ciclo comparando correo y alias
-			if (correo.equals(c.getCorreo()) && alias.equals(c.getAlias())) {
+			// se termina el ciclo comparando el alias
+			if (alias.equals(c.getAlias())) {
 				break;
 			}
 			indexContacto++;
@@ -157,8 +134,25 @@ public class Agenda {
 		}
 		// Se elimina de la lista de teléfonos del contacto
 		c.getTelefonos().remove(indexTelefono);
+		System.out.println("-- Teléfono eliminado del contacto --");
 	}
-	
+	//h) Método para consultar a una persona y obtener sus datos
+		public void consultarPersona(String dato) {
+		    boolean encontrado = false;
+		    // Se busca y se imprime el toString del contacto, el cual incluye
+		    // el toString de persona y el toString de sus teléfonos
+		    for (Contacto c : agenda) {
+		        if (c.getNombre().equalsIgnoreCase(dato) || 
+		            c.getAlias().equalsIgnoreCase(dato)) {
+		            System.out.println(c.toString());
+		            encontrado = true;
+		            break;
+		        }
+		    }
+		    if (!encontrado) {
+		        System.out.println("Persona no encontrada.");
+		    }
+		}
 	// Método toString
 	public String toString() {
 		// StringBuilder usado para no crear muchisimos Strings

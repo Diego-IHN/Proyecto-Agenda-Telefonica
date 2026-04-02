@@ -15,6 +15,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UsaAgenda {
+	// Como se necesita crear 2 veces teléfono es mejor crear un método para reutilizar el código
+	// este método se usa en las opciones 5 y 7
+	public static Telefono crearTelefono(Agenda miAgenda, Scanner sc) {
+		String prefijo, numeroTel;
+		char tipo;
+		
+		//Validación del tipo de teléfono
+		System.out.println("-- Ingrese el tipo de teléfono: Móvil (m) / Fijo (f) --");
+		tipo = sc.next().toLowerCase().charAt(0);
+		while (tipo != 'm' && tipo != 'f') { tipo = sc.next().toLowerCase().charAt(0); }
+		sc.nextLine();
+		
+		//Validación del prefijo 
+		System.out.println("-- Ingrese el prefijo (2 dígitos) --");
+		prefijo = sc.nextLine();
+		while (!prefijo.matches("\\d{2}")) {System.out.println("-- Error: Ingrese un prefijo de 2 dígitos --"); prefijo = sc.nextLine();}
+		
+		//Validación del número de teléfono
+		System.out.println("-- Ingrese el número de teléfono (10 dígitos) --");
+		numeroTel = sc.nextLine();
+		while (!numeroTel.matches("\\d{10}")) {System.out.println("-- Error: Ingrese un número de 10 dígitos --"); numeroTel = sc.nextLine();}
+		
+		return new Telefono(tipo, prefijo, numeroTel);
+	}
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		// Valores de prueba para la agenda, eliminarlos al final
@@ -31,7 +56,7 @@ public class UsaAgenda {
 		while (true) {			
 			int eleccion;
 			char tipo;
-			String alias, prefijo, numeroTel;
+			String alias, prefijo, numeroTel, correo, nombre;
 			System.out.println("--- Bienvenido a las operaciones disponibles. Elige una: ---"
 					+ "\n1.- Imprimir todos los datos de la Agenda"
 					+ "\n2.- Imprimir un listado de contactos por tipo de teléfono"
@@ -59,44 +84,72 @@ public class UsaAgenda {
 				System.out.println();
 			//Agregar una persona a la agenda
 			} else if (eleccion == 3) {
+				// SÓLO FALTA ESTE
 				continue;
-			//Agregar un correo a una persona
+			//cambiar el correo a una persona
 			} else if (eleccion == 4) {
-				continue;
+				// Se consiguen los datos
+				System.out.println("-- Ingrese el nombre del contacto --");
+				nombre = sc.nextLine();
+				while (!miAgenda.validarNombre(nombre)) { System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); nombre = sc.nextLine(); }
+				System.out.println("-- Ingresa el nuevo correo del contacto --");
+				correo = sc.nextLine();
+				// Se cambia el correo
+				miAgenda.cambiarCorreo(nombre, correo);
+				System.out.println();
 			//Agregar un teléfono a una persona
 			} else if (eleccion == 5) {
+				// Se obtiene de forma aparte el alias
 				System.out.println("-- Ingrese el alias del contacto --");
 				alias = sc.nextLine();
 				while (!miAgenda.validarAlias(alias)) { System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); alias = sc.nextLine(); }
-				
-				//Validación del tipo de teléfono
-				System.out.println("-- Ingrese el tipo de teléfono: Móvil (m) / Fijo (f) --");
-				tipo = sc.next().toLowerCase().charAt(0);
-				while (tipo != 'm' && tipo != 'f') { tipo = sc.next().toLowerCase().charAt(0); }
-				sc.nextLine();
-				
-				//Validación del prefijo 
-				System.out.println("-- Ingrese el prefijo (2 dígitos) --");
-				prefijo = sc.nextLine();
-				while (!prefijo.matches("\\d{2}")) {System.out.println("-- Error: Ingrese un prefijo de 2 dígitos --"); prefijo = sc.nextLine();}
-				
-				//Validación del número de teléfono
-				System.out.println("-- Ingrese el número de teléfono (10 dígitos) --");
-				numeroTel = sc.nextLine();
-				while (!numeroTel.matches("\\d{10}")) {System.out.println("-- Error: Ingrese un número de 10 dígitos --"); numeroTel = sc.nextLine();}
-				
-				Telefono t = new Telefono(tipo, prefijo, numeroTel);
+				// Se consigue el teléfono y se crea
+				Telefono t = crearTelefono(miAgenda, sc);
 				miAgenda.agregarTelefonoAContacto(alias,t);
 				System.out.println();
 			//Eliminar un contacto
 			} else if (eleccion == 6) {
-				continue;
+				// Obteniendo los datos a buscar
+				System.out.println("-- Ingrese el correo del usuario a eliminar --");
+				correo = sc.nextLine();
+				System.out.println("-- Ingrese el alias del usuario a eliminar --");
+				alias = sc.nextLine();
+				// Se elimina el contacto
+				miAgenda.eliminarContacto(correo, alias);
+				System.out.println();
 			//Eliminar el teléfono de un contacto
 			} else if (eleccion == 7) {
-				continue;
+				// Se obtiene el alias
+				System.out.println("-- Ingrese el alias del contacto --");
+				alias = sc.nextLine();
+				while (!miAgenda.validarAlias(alias)) { System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); alias = sc.nextLine(); }
+				// Se obtiene el teléfono y se elimina el teléfono del contacto
+				Telefono t = crearTelefono(miAgenda, sc);
+				miAgenda.eliminarTelefonoContacto(alias, t);
+				System.out.println();
 			//Consultar una persona (por nombre o por alias)
 			} else if (eleccion == 8) {
-				continue;
+				System.out.println("¿Desea buscar por alias o por nombre?"
+						+ "\n1.- Alias"
+						+ "\n2.- Nombre");
+				int op = sc.nextInt();
+				if (op == 1) {
+					// Caso de consulta por alias
+					System.out.println("-- Ingrese el alias del contacto --");
+					alias = sc.nextLine();
+					while (!miAgenda.validarAlias(alias)) { System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); alias = sc.nextLine(); }
+					miAgenda.consultarPersona(alias);
+				} else if (op == 2) {
+					// Caso de consulta por nombre
+					System.out.println("-- Ingrese el nombre del contacto --");
+					nombre = sc.nextLine();
+					while (!miAgenda.validarNombre(nombre)) { System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); nombre = sc.nextLine(); }
+					miAgenda.consultarPersona(nombre);
+				} else {
+					// Caso default en que el usuario no elige ninguna opción válida
+					System.out.println("Ingrese una opción válida");
+				}
+				System.out.println();
 			//Salir
 			} else if (eleccion == 9) {
 				break;
