@@ -1,5 +1,15 @@
 package equipo;
-
+/*
+ * 16/03/2026
+ * Asignatura: POO (Programación Orientada a Objetos)
+ * Unidad 3: Proyecto en equipo
+ * Clase: UsaAgenda
+ * Docente: María Lucía Barrón Estrada
+ * -- Integrantes: -- 
+ * Luis Angel Vea Chairez 25171325
+ * Diego Antonio López Olivas 25171090
+ * Didier Montoya Samaniego 25170896
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +22,7 @@ public class UsaAgenda {
 		Telefono t2 = new Telefono('f', "52", "6516513187");
 		Contacto c1 = new Contacto("Luis", "Vea", "luve", 'M', "luve@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
 		Telefono t3 = new Telefono('m', "52", "1651315848");
-		Contacto c2 = new Contacto("Pepe", "Arroz", "peps", 'M', "peps@gmail.com", new ArrayList<Telefono>(List.of(t3)));
+		Contacto c2 = new Contacto("Pepe", "Ernesto", "peps", 'M', "peps@gmail.com", new ArrayList<Telefono>(List.of(t3)));
 		// Dejar vacíos los paréntesis finales, es de prueba
 		ArrayList<Contacto> datosPredeterminados = new ArrayList<>(List.of(c1, c2));
 		Agenda miAgenda = new Agenda(datosPredeterminados);
@@ -32,6 +42,7 @@ public class UsaAgenda {
 					+ "\n7.- Eliminar el teléfono de un contacto"
 					+ "\n8.- Consultar una persona (por nombre o por alias)"
 					+ "\n9.- Salir");
+			
 			while (!sc.hasNextInt()) {sc.next();}
 			eleccion = sc.nextInt();
 			sc.nextLine();
@@ -39,7 +50,6 @@ public class UsaAgenda {
 			if (eleccion == 1) {
 				System.out.println(miAgenda);
 				System.out.println();
-				continue;
 			//Imprimir un listado de contactos por tipo de teléfono
 			} else if (eleccion == 2) {
 				System.out.println("Escoja el tipo de teléfono: Móvil (m)/ Fijo (f)");
@@ -47,7 +57,6 @@ public class UsaAgenda {
 				while (tipo != 'm' && tipo != 'f') { sc.next(); tipo = sc.next().toLowerCase().charAt(0); } //Validación del tipo de teléfono
 				miAgenda.imprimirListadoDeContactosPorTipoDeTelefono(tipo);
 				System.out.println();
-				continue;
 			//Agregar una persona a la agenda
 			} else if (eleccion == 3) {
 				continue;
@@ -79,7 +88,6 @@ public class UsaAgenda {
 				Telefono t = new Telefono(tipo, prefijo, numeroTel);
 				miAgenda.agregarTelefonoAContacto(alias,t);
 				System.out.println();
-				continue;
 			//Eliminar un contacto
 			} else if (eleccion == 6) {
 				continue;

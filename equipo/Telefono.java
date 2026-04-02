@@ -1,14 +1,15 @@
+package equipo;
 /*
+ * 16/03/2026
  * Asignatura: POO (Programación Orientada a Objetos)
  * Unidad 3: Proyecto en equipo
+ * Clase: Teléfono
  * Docente: María Lucía Barrón Estrada
  * -- Integrantes: -- 
- * Luis Angel Vea Chairez
- * Diego Antonio López Olivas
- * Didier Montoya Samaniego
+ * Luis Angel Vea Chairez 25171325
+ * Diego Antonio López Olivas 25171090
+ * Didier Montoya Samaniego 25170896
  */
-package equipo;
-//Clase Teléfono
 public class Telefono {
 	//Atributos
 	private char tipo;

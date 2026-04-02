@@ -1,15 +1,75 @@
 package equipo;
-
+/*
+ * 16/03/2026
+ * Asignatura: POO (Programación Orientada a Objetos)
+ * Unidad 3: Proyecto en equipo
+ * Clase: Agenda
+ * Docente: María Lucía Barrón Estrada
+ * -- Integrantes: -- 
+ * Luis Angel Vea Chairez 25171325
+ * Diego Antonio López Olivas 25171090
+ * Didier Montoya Samaniego 25170896
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// clase Agenda
 public class Agenda {
 	private ArrayList<Contacto> agenda;
 	//Constructor para los datos iniciales / predeterminados de la agenda
 	public Agenda(ArrayList<Contacto> listaPredeterminada) {
 		this.agenda = listaPredeterminada;
+	}
+	//c) Método para imprimir el contacto por tipo de teléfono
+	public void imprimirPorTipoTelefono(char tipoBuscado) {
+	    boolean encontrado = false;
+	    for (Contacto c : agenda) {
+	        for (Telefono t : c.getTelefonos()) {
+	            if (t.getTipo() == tipoBuscado) {
+	                System.out.println(c.toString());
+	                encontrado = true;
+	                break;
+	            }
+	        }
+	    }
+	    // En caso que no se encuentre ese tipo de teléfono
+	    if (!encontrado) {
+	        System.out.println("No hay contactos con ese tipo de teléfono.");
+	    }
+	}
+	//d) Método para cambiar el correo de un contacto
+	public void cambiarCorreo(String dato, String nuevoCorreo) {
+	    boolean encontrado = false;
+	    // Primero se busca el contacto y al encontrarse se le cambia el correo
+	    for (Contacto c : agenda) {
+	        if (c.getNombre().equalsIgnoreCase(dato) || 
+	            c.getAlias().equalsIgnoreCase(dato)) {
+	            c.setCorreo(nuevoCorreo);
+	            System.out.println("Correo agregado correctamente.");
+	            encontrado = true;
+	            break;
+	        }
+	    }
+	    if (!encontrado) {
+	        System.out.println("No se encontró el contacto.");
+	    }
+	}
+	//h) Método para consultar a una persona y obtener sus datos
+	public void consultarPersona(String dato) {
+	    boolean encontrado = false;
+	    // Se busca y se imprime el toString del contacto, el cual incluye
+	    // el toString de persona y el toString de sus teléfonos
+	    for (Contacto c : agenda) {
+	        if (c.getNombre().equalsIgnoreCase(dato) || 
+	            c.getAlias().equalsIgnoreCase(dato)) {
+	            System.out.println(c.toString());
+	            encontrado = true;
+	            break;
+	        }
+	    }
+	    if (!encontrado) {
+	        System.out.println("Persona no encontrada.");
+	    }
 	}
 	//Método auxiliar para validar un alias dentro de la lista de contactos
 	public boolean validarAlias(String alias) {
@@ -21,11 +81,10 @@ public class Agenda {
 		return false;
 	}
 	
-	//Método para obtener el listado de contactos por tipo de teléfono
+	//b) Método para obtener el listado de contactos por tipo de teléfono
 	public void imprimirListadoDeContactosPorTipoDeTelefono(char tipoTel) {
 		for (Contacto c : agenda) {
-			boolean contactoImpreso = false;
-			
+			boolean contactoImpreso = false;	
 			//Recorre todos los telefonos del contacto
 			for (Telefono tel : c.getTelefonos()) {
 				if (tel.getTipo() == tipoTel) {
@@ -41,7 +100,7 @@ public class Agenda {
 		}
 	}
 	
-	//Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
+	//e) Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
 		public void agregarTelefonoAContacto(String alias, Telefono t) {
 			boolean encontrado = false;
 			for (Contacto c: agenda) {
@@ -57,13 +116,13 @@ public class Agenda {
 			}
 		} 
 		
-	// Método para eliminar un contacto de la agenda
-		public void eliminarContacto(Contacto c1) {
+	//f) Método para eliminar un contacto de la agenda
+		public void eliminarContacto(String correo, String alias) {
 			int index = 0;
 			for (Contacto c : agenda) {
 				// Se busca el correo iterando en la agenda y si se encuentra 
 				// se termina el ciclo comparando el correo y el alias
-				if (c1.getCorreo().equals(c.getCorreo()) && c1.getAlias().equals(c.getAlias())) {
+				if (correo.equals(c.getCorreo()) && alias.equals(c.getAlias())) {
 					break;
 				}
 				index++;
@@ -72,15 +131,15 @@ public class Agenda {
 			agenda.remove(index);
 		}
 	
-	// Método para eliminar los teléfonos de un contacto
-	public void eliminarTelefonoContacto(Contacto c1, Telefono t1) {
+	//g) Método para eliminar los teléfonos de un contacto
+	public void eliminarTelefonoContacto(String correo, String alias, Telefono t1) {
 		// Dos índices requeridos para claridad
 		int indexContacto = 0;
 		int indexTelefono = 0;
 		for (Contacto c : agenda) {
 			// Se busca el correo iterando en la agenda y si se encuentra 
 			// se termina el ciclo comparando correo y alias
-			if (c1.getCorreo().equals(c.getCorreo()) && c1.getAlias().equals(c.getAlias())) {
+			if (correo.equals(c.getCorreo()) && alias.equals(c.getAlias())) {
 				break;
 			}
 			indexContacto++;
