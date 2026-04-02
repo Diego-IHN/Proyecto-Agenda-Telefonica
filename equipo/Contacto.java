@@ -3,9 +3,9 @@
  * Unidad 3: Proyecto en equipo
  * Docente: María Lucía Barrón Estrada
  * -- Integrantes: -- 
- * Luis Angel Vea Chairez 25171325
- * Diego Antonio López Olivas 25171090
- * Didier Montoya Samaniego 25170896
+ * Luis Angel Vea Chairez
+ * Diego Antonio López Olivas
+ * Didier Montoya Samaniego
  */
 package equipo;
 import java.util.ArrayList;
@@ -41,14 +41,6 @@ public class Contacto extends Persona {
 		setTelefonos(telefonos);	
 	}
 	
-	//Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
-	public void agregarTelefono(Telefono t) {
-		if (t != null) { this.telefonos.add(t); 
-		} else {
-			System.out.println("-- ERROR: ENTRADA VACÍA --");
-		}
-	} 
-	
 	//Método para listar teléfonos del Contacto
 	public void obtenerListaDeTelefonos() {
 		System.out.println("Teléfonos de " + nombre + ": ");
@@ -70,27 +62,23 @@ public class Contacto extends Persona {
 			System.out.println("-- ERROR: El teléfono seleccionado no existe --");
 		}
 	}
-	
-	// Método toString
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		int contador = 0;
-		for (Telefono t : telefonos) {
-			if (telefonos.size() > 1 && contador != 0 && contador != telefonos.size()) {
-				sb.append(", " + t.getNumTel());				
-			} else {
-				sb.append(t.getNumTel());								
-			}
-			contador++;
-		}
-		return super.toString() + "| Teléfono(s): " + sb;
-	}
-	
-	// main para probar
-	public static void main(String[] args) {
-		Telefono t1 = new Telefono('m', "52", "6671354895");
-		Telefono t2 = new Telefono('m', "52", "1467871357");
-		Contacto c1 = new Contacto("Luis", "Vea", "luve", 'M', "luve@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
-		System.out.println(c1);
+	    StringBuilder sb = new StringBuilder();
+	    
+	    // Usamos super.toString() para traer lo que ya imprime Persona (Nombre, alias, etc.)
+	    // Si Persona no tiene toString, puedes poner: getNombre() + " " + getApellidos()
+	    sb.append("--- Contacto: ").append(getNombre()).append(" ").append(getApellidos()).append(" ---\n");
+	    sb.append("Alias: ").append(getAlias()).append("\n");
+	    sb.append("Correo: ").append(this.correo).append("\n");
+	    sb.append("Teléfonos:\n");
+	    
+	    if (this.telefonos.isEmpty()) {
+	        sb.append("  -- No hay teléfonos registrados --\n");
+	    } else {
+	        for (Telefono t : this.telefonos) {
+	            sb.append("  -> ").append(t.toString()).append("\n");
+	        }
+	    }
+	    return sb.toString();
 	}
 }

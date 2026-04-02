@@ -3,9 +3,9 @@
  * Unidad 3: Proyecto en equipo
  * Docente: María Lucía Barrón Estrada
  * -- Integrantes: -- 
- * Luis Angel Vea Chairez 25171325
- * Diego Antonio López Olivas 25171090
- * Didier Montoya Samaniego 25170896
+ * Luis Angel Vea Chairez
+ * Diego Antonio López Olivas
+ * Didier Montoya Samaniego
  */
 package equipo;
 //Clase Teléfono
@@ -57,8 +57,4 @@ public class Telefono {
 	public String toString() {
 		return String.format("[%c](+%s)%s", tipo, prefijo, numTel);
 	}
-	/*
-	public static void main(String[] args) {
-		Telefono t1 = new Telefono('m', '');
-	}*/
 }
