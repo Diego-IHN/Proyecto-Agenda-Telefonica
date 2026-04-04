@@ -1,14 +1,18 @@
+package equipo;
+
+import java.util.regex.Pattern;
+
 /*
+ * 16/03/2026
  * Asignatura: POO (Programación Orientada a Objetos)
  * Unidad 3: Proyecto en equipo
+ * Clase: Persona
  * Docente: María Lucía Barrón Estrada
  * -- Integrantes: -- 
  * Luis Angel Vea Chairez 25171325
  * Diego Antonio López Olivas 25171090
  * Didier Montoya Samaniego 25170896
  */
-package equipo;
-//Clase Persona
 public class Persona {
 	//Atributos
 	protected String nombre, apellidos, alias;
@@ -21,7 +25,11 @@ public class Persona {
 		this.alias = alias;
 		this.sexo = sexo;
 	}
-	
+	public static boolean validarSexo(char sexo) {
+		// Expresión regular: sólo 1 caracter que sea H o M 
+		Pattern pattern = Pattern.compile("^[HM]$");
+		return (pattern.matcher(String.valueOf(sexo)).matches());
+	}
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
@@ -51,11 +59,5 @@ public class Persona {
 	//Método toString
 	public String toString() {
 		return String.format("Nombre: %s %s | Alias: %s | Sexo: %c ", nombre, apellidos, alias, sexo);
-	}
-	
-	//Main de prueba
-	public static void main(String[]args) {
-		Persona p1 = new Persona("Diego", "López Olivas", "Ego", 'H');
-		System.out.println(p1);
 	}
 }

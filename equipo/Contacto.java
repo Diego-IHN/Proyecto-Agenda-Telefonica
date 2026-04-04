@@ -1,38 +1,23 @@
+package equipo;
 /*
+ * 16/03/2026
  * Asignatura: POO (Programación Orientada a Objetos)
  * Unidad 3: Proyecto en equipo
+ * Clase: Contacto
  * Docente: María Lucía Barrón Estrada
  * -- Integrantes: -- 
  * Luis Angel Vea Chairez 25171325
  * Diego Antonio López Olivas 25171090
  * Didier Montoya Samaniego 25170896
  */
-package equipo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 //Clase Contacto extiende Persona
 public class Contacto extends Persona {
 	//Atributos
 	private String correo;
 	private List<Telefono> telefonos;
-	
-	//Getters y setters
-	public String getCorreo() {
-		return correo;
-	}
-	public void setCorreo(String correo) {
-		String regex = "^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$";
-		if (correo != null && correo.matches(regex)) { this.correo = correo; } 
-		else { System.out.println("-- ERROR: CORREO INVÁLIDO --"); }
-	}
-	public List<Telefono> getTelefonos() {
-		return telefonos;
-	}
-	public void setTelefonos(List<Telefono> telefonos) {
-		this.telefonos = (telefonos != null) ? telefonos : new ArrayList<>();
-	}
-	//
-	
 	//Constructor
 	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
 			List<Telefono> telefonos) {
@@ -40,15 +25,36 @@ public class Contacto extends Persona {
 		setCorreo(correo);
 		setTelefonos(telefonos);	
 	}
-	
-	//Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
-	public void agregarTelefono(Telefono t) {
-		if (t != null) { this.telefonos.add(t); 
-		} else {
-			System.out.println("-- ERROR: ENTRADA VACÍA --");
+	//Getters y setters
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		/*
+		 * Expresión regular que valida (por partes):
+		 * 1.- Inicio de la cadena
+		 * 2.- Puede tener letras, números, puntos y guiones
+		 * 3.- Un arroba
+		 * 4.- Nuevamente letras, números, puntos y guiones
+		 * 5.- Un punto
+		 * 6.- 2 o 3 letras minúsculas
+		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
+		 * 8.- Fin de la cadena
+		 */
+		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
+		if (correo != null && p.matcher(correo).matches()) { 
+			this.correo = correo;
+		} 
+		else {
+			System.out.println("-- ERROR: CORREO INVÁLIDO --"); 
 		}
-	} 
-	
+	}
+	public List<Telefono> getTelefonos() {
+		return telefonos;
+	}
+	public void setTelefonos(List<Telefono> telefonos) {
+		this.telefonos = (telefonos != null) ? telefonos : new ArrayList<>();
+	}
 	//Método para listar teléfonos del Contacto
 	public void obtenerListaDeTelefonos() {
 		System.out.println("Teléfonos de " + nombre + ": ");
@@ -60,7 +66,6 @@ public class Contacto extends Persona {
 			}
 		}
 	}
-	
 	//Método para eliminar un teléfono
 	public void eliminarTelefono(int index) {
 		if (index >= 0 && index < telefonos.size()) {
@@ -70,27 +75,22 @@ public class Contacto extends Persona {
 			System.out.println("-- ERROR: El teléfono seleccionado no existe --");
 		}
 	}
-	
-	// Método toString
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		int contador = 0;
-		for (Telefono t : telefonos) {
-			if (telefonos.size() > 1 && contador != 0 && contador != telefonos.size()) {
-				sb.append(", " + t.getNumTel());				
-			} else {
-				sb.append(t.getNumTel());								
-			}
-			contador++;
-		}
-		return super.toString() + "| Teléfono(s): " + sb;
-	}
-	
-	// main para probar
-	public static void main(String[] args) {
-		Telefono t1 = new Telefono('m', "52", "6671354895");
-		Telefono t2 = new Telefono('m', "52", "1467871357");
-		Contacto c1 = new Contacto("Luis", "Vea", "luve", 'M', "luve@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
-		System.out.println(c1);
+	    StringBuilder sb = new StringBuilder();
+	    // Usamos super.toString() para traer lo que ya imprime Persona (Nombre, alias, etc.)
+	    // Si Persona no tiene toString, puedes poner: getNombre() + " " + getApellidos()
+	    sb.append("--- Contacto: ").append(getNombre()).append(" ").append(getApellidos()).append(" ---\n");
+	    sb.append("Alias: ").append(getAlias()).append("\n");
+	    sb.append("Correo: ").append(this.correo).append("\n");
+	    sb.append("Teléfonos:\n");
+	    
+	    if (this.telefonos.isEmpty()) {
+	        sb.append("  -- No hay teléfonos registrados --\n");
+	    } else {
+	        for (Telefono t : this.telefonos) {
+	            sb.append("  -> ").append(t.toString()).append("\n");
+	        }
+	    }
+	    return sb.toString();
 	}
 }
