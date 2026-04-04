@@ -64,7 +64,8 @@ public class UsaAgenda {
 		// Dejar vacíos los paréntesis finales, es de prueba
 		ArrayList<Contacto> datosPredeterminados = new ArrayList<>(List.of(c1, c2));
 		Agenda miAgenda = new Agenda(datosPredeterminados);
-		
+		// Como inicia con datos, esto es para que inicie ordenada
+		miAgenda.ordenarAgenda();
 		// Para que el programa permita hacer múltiples elecciones
 		while (true) {			
 			int eleccion;
