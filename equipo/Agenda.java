@@ -39,7 +39,13 @@ public class Agenda {
 			}
 		}
 	}
-	
+	// Método auxiliar para ordenar la agenda
+	public void ordenarAgenda() {
+		// Ordena la agenda comparando los alias, si la comparación es positiva
+		// significa que c2 va antes, si es negativa, c1 va antes
+		// (c1,c2)-> es el comparador
+		agenda.sort((c1, c2) -> c1.getAlias().compareToIgnoreCase(c2.getAlias()));
+	}
 	//c) Método para agregar un Contacto a la agenda
 	public void agregarContacto(Contacto nuevoContacto) {
 	    if (nuevoContacto != null) {
@@ -48,6 +54,7 @@ public class Agenda {
 	    } else {
 	        System.out.println("-- No se pudo agregar el contacto --");
 	    }
+	    ordenarAgenda();
 	} 
 	
 	//d) Método para cambiar el correo de un contacto
