@@ -31,7 +31,10 @@ public class Telefono {
 	}
 	//Setter con validación de tipo de teléfono móvil (m) y fijo (f)
 	public void setTipo(char tipo) {
-		if (tipo == 'm' || tipo == 'f') { this.tipo = tipo;}
+		Pattern p = Pattern.compile("^[mf]$");
+		if (p.matcher(String.valueOf(tipo)).matches()) { 
+			this.tipo = tipo;
+		}
 		else {
 			this.tipo = 'X';
 		}

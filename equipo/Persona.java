@@ -60,10 +60,4 @@ public class Persona {
 	public String toString() {
 		return String.format("Nombre: %s %s | Alias: %s | Sexo: %c ", nombre, apellidos, alias, sexo);
 	}
-	
-	//Main de prueba
-	public static void main(String[]args) {
-		Persona p1 = new Persona("Diego", "López Olivas", "Ego", 'H');
-		System.out.println(p1);
-	}
 }

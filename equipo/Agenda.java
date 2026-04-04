@@ -44,9 +44,9 @@ public class Agenda {
 	public void agregarContacto(Contacto nuevoContacto) {
 	    if (nuevoContacto != null) {
 	        agenda.add(nuevoContacto);
-	        System.out.println("Contacto agregado correctamente.");
+	        System.out.println("-- Contacto agregado correctamente --");
 	    } else {
-	        System.out.println("No se pudo agregar el contacto.");
+	        System.out.println("-- No se pudo agregar el contacto --");
 	    }
 	} 
 	
@@ -58,13 +58,13 @@ public class Agenda {
 	        if (c.getNombre().equalsIgnoreCase(dato) || 
 	            c.getAlias().equalsIgnoreCase(dato)) {
 	            c.setCorreo(nuevoCorreo);
-	            System.out.println("Correo agregado correctamente.");
+	            System.out.println("-- Correo modificado correctamente --");
 	            encontrado = true;
 	            break;
 	        }
 	    }
 	    if (!encontrado) {
-	        System.out.println("No se encontró el contacto.");
+	        System.out.println("-- Error: No se encontró el contacto --");
 	    }
 	}
 	//Método auxiliar para validar un alias dentro de la lista de contactos
@@ -94,16 +94,15 @@ public class Agenda {
 	//Método auxiliar para validar correo
 	public boolean validarCorreo(String correo) {
 		/*
-		 * Primer corchete: [A-Za-z0-9+_.]:
-		 * 	Que tenga cualquier letra, digito y los guiones bajos o puntos (más de un 
-		 * 	guión bajo o punto)
-		 * Arroba @:
-		 * 	Tiene que tener esto, separando las dos secciones
-		 * Segundo corchete: [A-Za-z0-9.]:
-		 * 	Que tenga cualquier letra, y digito pero sólo un punto
-		 * El $:
-		 * 	En cuanto cumpla con ambas condiciones ya no debe haber nada más, es el final del 
-		 * 	String
+		 * Expresión regular que valida (por partes):
+		 * 1.- Inicio de la cadena
+		 * 2.- Puede tener letras, números, puntos y guiones
+		 * 3.- Un arroba
+		 * 4.- Nuevamente letras, números, puntos y guiones
+		 * 5.- Un punto
+		 * 6.- 2 o 3 letras minúsculas
+		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
+		 * 8.- Fin de la cadena
 		 */
 		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
 		boolean verificado = p.matcher(correo).matches();
@@ -122,43 +121,43 @@ public class Agenda {
 		return coincide;
 	}
 	//e) Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
-		public void agregarTelefonoAContacto(String alias, Telefono t) {
-			boolean encontrado = false;
-			for (Contacto c: agenda) {
-				if (c.getAlias().equalsIgnoreCase(alias.trim())) {
-					c.getTelefonos().add(t);
-					System.out.println("-- Teléfono agregado con éxito --");
-					encontrado = true;
-					break;
-				}
-			}
-			if (!encontrado) {
-				System.out.println("-- Error: No se pudo guardar el teléfono en el contacto --");
-			}
-		} 
-		
-	//f) Método para eliminar un contacto de la agenda
-		public void eliminarContacto(String correo) {
-			int index = 0;
-			boolean encontrado = false;
-			for (Contacto c : agenda) {
-				// Se busca el correo iterando en la agenda y si se encuentra 
-				// se termina el ciclo comparando el correo y el alias
-				if (correo.equals(c.getCorreo())) {
-					encontrado = true;
-					break;
-				}
-				index++;
-			}
-			if (encontrado) {
-				// Se elimina de la agenda usando el método remove de los ArrayList
-				// sólo si se encuentra
-				agenda.remove(index);
-				System.out.println("-- Contacto eliminado --");				
-			} else {
-				System.out.println("-- Error: Contacto no encontrado --");
+	public void agregarTelefonoAContacto(String alias, Telefono t) {
+		boolean encontrado = false;
+		for (Contacto c: agenda) {
+			if (c.getAlias().equalsIgnoreCase(alias.trim())) {
+				c.getTelefonos().add(t);
+				System.out.println("-- Teléfono agregado con éxito --");
+				encontrado = true;
+				break;
 			}
 		}
+		if (!encontrado) {
+			System.out.println("-- Error: No se pudo guardar el teléfono en el contacto --");
+		}
+	} 
+		
+	//f) Método para eliminar un contacto de la agenda
+	public void eliminarContacto(String correo) {
+		int index = 0;
+		boolean encontrado = false;
+		for (Contacto c : agenda) {
+			// Se busca el correo iterando en la agenda y si se encuentra 
+			// se termina el ciclo comparando el correo y el alias
+			if (correo.equals(c.getCorreo())) {
+				encontrado = true;
+				break;
+			}
+			index++;
+		}
+		if (encontrado) {
+			// Se elimina de la agenda usando el método remove de los ArrayList
+			// sólo si se encuentra
+			agenda.remove(index);
+			System.out.println("-- Contacto eliminado --");				
+		} else {
+			System.out.println("-- Error: Contacto no encontrado --");
+		}
+	}
 	
 	//g) Método para eliminar los teléfonos de un contacto
 	public void eliminarTelefonoContacto(String alias, Telefono t1) {
@@ -189,22 +188,22 @@ public class Agenda {
 		System.out.println("-- Teléfono eliminado del contacto --");
 	}
 	//h) Método para consultar a una persona y obtener sus datos
-		public void consultarPersona(String dato) {
-		    boolean encontrado = false;
-		    // Se busca y se imprime el toString del contacto, el cual incluye
-		    // el toString de persona y el toString de sus teléfonos
-		    for (Contacto c : agenda) {
-		        if (c.getNombre().equalsIgnoreCase(dato) || 
-		            c.getAlias().equalsIgnoreCase(dato)) {
-		            System.out.println(c.toString());
-		            encontrado = true;
-		            break;
-		        }
-		    }
-		    if (!encontrado) {
-		        System.out.println("Persona no encontrada.");
-		    }
-		}
+	public void consultarPersona(String dato) {
+	    boolean encontrado = false;
+	    // Se busca y se imprime el toString del contacto, el cual incluye
+	    // el toString de persona y el toString de sus teléfonos
+	    for (Contacto c : agenda) {
+	        if (c.getNombre().equalsIgnoreCase(dato) || 
+	            c.getAlias().equalsIgnoreCase(dato)) {
+	            System.out.println(c.toString());
+	            encontrado = true;
+	            break;
+	        }
+	    }
+	    if (!encontrado) {
+	        System.out.println("Persona no encontrada.");
+	    }
+	}
 	// Método toString
 	public String toString() {
 		// StringBuilder usado para no crear muchisimos Strings

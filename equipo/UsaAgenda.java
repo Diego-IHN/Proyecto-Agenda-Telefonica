@@ -113,7 +113,7 @@ public class UsaAgenda {
 					System.out.println("-- Error: El alias ya está registrado en otro contacto, ingrese uno nuevo --"); 
 					alias = sc.nextLine(); 
 				}
-				System.out.println("-- Ingrese su sexo --");
+				System.out.println("-- Ingrese su sexo (H) o (M) --");
 				sexo = sc.nextLine().toUpperCase().charAt(0);
 				// Valida que el sexo sea de un caracter válido (H o M)
 				while(!miAgenda.validarSexo(sexo)) {

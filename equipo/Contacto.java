@@ -30,6 +30,17 @@ public class Contacto extends Persona {
 		return correo;
 	}
 	public void setCorreo(String correo) {
+		/*
+		 * Expresión regular que valida (por partes):
+		 * 1.- Inicio de la cadena
+		 * 2.- Puede tener letras, números, puntos y guiones
+		 * 3.- Un arroba
+		 * 4.- Nuevamente letras, números, puntos y guiones
+		 * 5.- Un punto
+		 * 6.- 2 o 3 letras minúsculas
+		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
+		 * 8.- Fin de la cadena
+		 */
 		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
 		if (correo != null && p.matcher(correo).matches()) { 
 			this.correo = correo;
