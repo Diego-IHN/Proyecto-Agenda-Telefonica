@@ -105,8 +105,8 @@ public class Agenda {
 		 * 	En cuanto cumpla con ambas condiciones ya no debe haber nada más, es el final del 
 		 * 	String
 		 */
-		Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.]+@+[A-Za-z0-9.]+$");
-		boolean verificado = pattern.matcher(correo).matches();
+		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
+		boolean verificado = p.matcher(correo).matches();
 		// Regresa si el correo cumple con la expresión regular
 		return verificado;
 	}
@@ -114,8 +114,9 @@ public class Agenda {
 		// Regresa si el correo ya pertenece a otro contacto
 		boolean coincide = false;
 		for (Contacto c : agenda) {
-			if (c.getCorreo().equals(correo)) {
+			if (correo.equals(c.getCorreo())) {
 				coincide = true;
+				break;
 			}
 		}
 		return coincide;
@@ -137,19 +138,26 @@ public class Agenda {
 		} 
 		
 	//f) Método para eliminar un contacto de la agenda
-		public void eliminarContacto(String correo, String alias) {
+		public void eliminarContacto(String correo) {
 			int index = 0;
+			boolean encontrado = false;
 			for (Contacto c : agenda) {
 				// Se busca el correo iterando en la agenda y si se encuentra 
 				// se termina el ciclo comparando el correo y el alias
-				if (correo.equals(c.getCorreo()) && alias.equals(c.getAlias())) {
+				if (correo.equals(c.getCorreo())) {
+					encontrado = true;
 					break;
 				}
 				index++;
 			}
-			// Se elimina de la agenda usando el método remove de los ArrayList
-			agenda.remove(index);
-			System.out.println("-- Contacto eliminado --");
+			if (encontrado) {
+				// Se elimina de la agenda usando el método remove de los ArrayList
+				// sólo si se encuentra
+				agenda.remove(index);
+				System.out.println("-- Contacto eliminado --");				
+			} else {
+				System.out.println("-- Error: Contacto no encontrado --");
+			}
 		}
 	
 	//g) Método para eliminar los teléfonos de un contacto

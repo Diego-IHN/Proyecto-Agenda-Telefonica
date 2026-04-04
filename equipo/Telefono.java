@@ -1,4 +1,7 @@
 package equipo;
+
+import java.util.regex.Pattern;
+
 /*
  * 16/03/2026
  * Asignatura: POO (Programación Orientada a Objetos)
@@ -38,7 +41,11 @@ public class Telefono {
 	}
 	//Setter con validación de prefijo (valida que no esté vacío y que contenga únicamente dos dígitos)
 	public void setPrefijo(String prefijo) {
-		if (prefijo != null && prefijo.matches("\\d{2}")) { this.prefijo = prefijo; }
+		//Que sean SÓLO dos ({2}) dígitos ([0-9]) de principio (^) a fin ($)
+		Pattern p = Pattern.compile("^[0-9]{2}$");
+		if (prefijo != null && p.matcher(prefijo).matches()) { 
+			this.prefijo = prefijo; 
+		}
 		else {
 			this.prefijo = "XX";
 		}
@@ -48,6 +55,8 @@ public class Telefono {
 	}
 	//Setter con validación del número de teléfono (valida que no esté vacío y que contenga única y exclusivamente 10 dígitos)
 	public void setNumTel(String numTel) {
+		// SÓLO 10 dígitos
+		Pattern p = Pattern.compile("^[0-9]{10}$");
 		if (numTel != null && numTel.matches("\\d{10}")) { this.numTel = numTel;}
 		else {
 			this.numTel = "0000000000";

@@ -30,9 +30,13 @@ public class Contacto extends Persona {
 		return correo;
 	}
 	public void setCorreo(String correo) {
-		String regex = "^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$";
-		if (correo != null && correo.matches(regex)) { this.correo = correo; } 
-		else { System.out.println("-- ERROR: CORREO INVÁLIDO --"); }
+		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
+		if (correo != null && p.matcher(correo).matches()) { 
+			this.correo = correo;
+		} 
+		else {
+			System.out.println("-- ERROR: CORREO INVÁLIDO --"); 
+		}
 	}
 	public List<Telefono> getTelefonos() {
 		return telefonos;
