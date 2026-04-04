@@ -13,6 +13,7 @@ package equipo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Agenda {
 	private ArrayList<Contacto> agenda;
@@ -39,7 +40,15 @@ public class Agenda {
 		}
 	}
 	
-	//c) Método para agregar una Persona a la agenda
+	//c) Método para agregar un Contacto a la agenda
+	public void agregarContacto(Contacto nuevoContacto) {
+	    if (nuevoContacto != null) {
+	        agenda.add(nuevoContacto);
+	        System.out.println("Contacto agregado correctamente.");
+	    } else {
+	        System.out.println("No se pudo agregar el contacto.");
+	    }
+	} 
 	
 	//d) Método para cambiar el correo de un contacto
 	public void cambiarCorreo(String dato, String nuevoCorreo) {
@@ -75,6 +84,41 @@ public class Agenda {
 			}
 		}
 		return false;
+	}
+	//Método auxiliar para validar el sexo
+	public boolean validarSexo(char sexo) {
+		// Expresión regular: sólo 1 caracter que sea H o M 
+		Pattern pattern = Pattern.compile("^[HM]$");
+		return (pattern.matcher(String.valueOf(sexo)).matches());
+	}
+	//Método auxiliar para validar correo
+	public boolean validarCorreo(String correo) {
+		/*
+		 * Primer corchete: [A-Za-z0-9+_.]:
+		 * 	Que tenga cualquier letra, digito y los guiones bajos o puntos (más de un 
+		 * 	guión bajo o punto)
+		 * Arroba @:
+		 * 	Tiene que tener esto, separando las dos secciones
+		 * Segundo corchete: [A-Za-z0-9.]:
+		 * 	Que tenga cualquier letra, y digito pero sólo un punto
+		 * El $:
+		 * 	En cuanto cumpla con ambas condiciones ya no debe haber nada más, es el final del 
+		 * 	String
+		 */
+		Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.]+@+[A-Za-z0-9.]+$");
+		boolean verificado = pattern.matcher(correo).matches();
+		// Regresa si el correo cumple con la expresión regular
+		return verificado;
+	}
+	public boolean coincideCorreo(String correo) {
+		// Regresa si el correo ya pertenece a otro contacto
+		boolean coincide = false;
+		for (Contacto c : agenda) {
+			if (c.getCorreo().equals(correo)) {
+				coincide = true;
+			}
+		}
+		return coincide;
 	}
 	//e) Método para agregar un teléfono: valida primero que la entrada no venga completamente vacía, de lo contrario no se guarda.
 		public void agregarTelefonoAContacto(String alias, Telefono t) {

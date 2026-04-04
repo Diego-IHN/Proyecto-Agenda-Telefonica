@@ -55,8 +55,8 @@ public class UsaAgenda {
 		// Para que el programa permita hacer múltiples elecciones
 		while (true) {			
 			int eleccion;
-			char tipo;
-			String alias, prefijo, numeroTel, correo, nombre;
+			char tipo, sexo;
+			String alias, prefijo, numeroTel, correo, nombre, apellidos;
 			System.out.println("--- Bienvenido a las operaciones disponibles. Elige una: ---"
 					+ "\n1.- Imprimir todos los datos de la Agenda"
 					+ "\n2.- Imprimir un listado de contactos por tipo de teléfono"
@@ -84,8 +84,58 @@ public class UsaAgenda {
 				System.out.println();
 			//Agregar una persona a la agenda
 			} else if (eleccion == 3) {
-				// SÓLO FALTA ESTE
-				continue;
+				System.out.println("-- Ingrese su nombre --");
+				nombre = sc.nextLine();
+				System.out.println("-- Ingrese sus apellidos --");
+				apellidos = sc.nextLine();
+				System.out.println("-- Ingrese su alias --");
+				alias = sc.nextLine();
+				// Si ya existe el alias entonces se vuelve a pedir que se ingrese
+				while(miAgenda.validarAlias(alias)) { 
+					System.out.println("-- Error: El alias ya está registrado en otro contacto, ingrese uno nuevo --"); 
+					alias = sc.nextLine(); 
+				}
+				System.out.println("-- Ingrese su sexo --");
+				sexo = sc.nextLine().toUpperCase().charAt(0);
+				// Valida que el sexo sea de un caracter válido (H o M)
+				while(!miAgenda.validarSexo(sexo)) {
+					System.out.println("-- Error: Ingresó un sexo incorrecto, elija (H) o (M) --");
+					sexo = sc.nextLine().toUpperCase().charAt(0);
+				}
+				System.out.println("-- Ingrese su correo --");
+				correo = sc.nextLine();
+				boolean coincide = miAgenda.coincideCorreo(correo);
+				boolean verificar = miAgenda.validarCorreo(correo);
+				// Valida que el correo esté en un formato correcto o que no esté en otro contacto
+				while(!verificar || coincide) {
+					if (!verificar) {						
+						System.out.println("-- Error: Ingresó un correo con un formato incorrecto --");
+					}
+					if (coincide) {
+						System.out.println("-- Error: El correo ingresado ya pertenece a otro contacto --");
+					}
+					System.out.println("-- Ingrese nuevamente el correo --");
+					correo = sc.nextLine();
+					coincide = miAgenda.coincideCorreo(correo);
+					verificar = miAgenda.validarCorreo(correo);					
+				}
+				ArrayList<Telefono> telefonos = new ArrayList<>();
+				Telefono t = crearTelefono(miAgenda, sc);				
+				telefonos.add(t);
+				System.out.println("-- ¿Desea agregar más teléfonos? (Y)/(N)--");
+				String op = sc.nextLine().toUpperCase();
+				// Para continuar agregando teléfonos hasta que el usuario se detenga
+				while(op.equals("Y")) {
+					Telefono tAux = crearTelefono(miAgenda, sc);
+					telefonos.add(tAux);
+					System.out.println("-- ¿Desea agregar más teléfonos? (Y)/(N)--");
+					op = sc.nextLine().toUpperCase();
+				}
+				// Se crea el contacto
+				Contacto c = new Contacto(nombre, apellidos, alias, sexo, correo, telefonos);
+				// Se agrega el contacto
+				miAgenda.agregarContacto(c);
+				System.out.println();
 			//cambiar el correo a una persona
 			} else if (eleccion == 4) {
 				// Se consiguen los datos

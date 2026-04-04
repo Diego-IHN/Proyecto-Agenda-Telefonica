@@ -12,12 +12,19 @@ package equipo;
  */
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 //Clase Contacto extiende Persona
 public class Contacto extends Persona {
 	//Atributos
 	private String correo;
 	private List<Telefono> telefonos;
-	
+	//Constructor
+	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
+			List<Telefono> telefonos) {
+		super(nombre, apellidos, alias, sexo);
+		setCorreo(correo);
+		setTelefonos(telefonos);	
+	}
 	//Getters y setters
 	public String getCorreo() {
 		return correo;
@@ -33,16 +40,6 @@ public class Contacto extends Persona {
 	public void setTelefonos(List<Telefono> telefonos) {
 		this.telefonos = (telefonos != null) ? telefonos : new ArrayList<>();
 	}
-	//
-	
-	//Constructor
-	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
-			List<Telefono> telefonos) {
-		super(nombre, apellidos, alias, sexo);
-		setCorreo(correo);
-		setTelefonos(telefonos);	
-	}
-	
 	//Método para listar teléfonos del Contacto
 	public void obtenerListaDeTelefonos() {
 		System.out.println("Teléfonos de " + nombre + ": ");
@@ -54,7 +51,6 @@ public class Contacto extends Persona {
 			}
 		}
 	}
-	
 	//Método para eliminar un teléfono
 	public void eliminarTelefono(int index) {
 		if (index >= 0 && index < telefonos.size()) {
@@ -66,7 +62,6 @@ public class Contacto extends Persona {
 	}
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    
 	    // Usamos super.toString() para traer lo que ya imprime Persona (Nombre, alias, etc.)
 	    // Si Persona no tiene toString, puedes poner: getNombre() + " " + getApellidos()
 	    sb.append("--- Contacto: ").append(getNombre()).append(" ").append(getApellidos()).append(" ---\n");
