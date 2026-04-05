@@ -21,14 +21,14 @@ public class UsaAgenda {
 	public static Telefono crearTelefono(Scanner sc) {
 		String prefijo, numeroTel;
 		char tipo;
-		Pattern patTipo = Pattern.compile("^[mf]$");
-		Pattern patPrefijo = Pattern.compile("^[0-9]{2}$");
-		Pattern patNumeroTel = Pattern.compile("^[0-9]{10}$");
+		Pattern regexTipo = Pattern.compile("^[mf]$");
+		Pattern regexPrefijo = Pattern.compile("^[0-9]{2}$");
+		Pattern regexNumeroTel = Pattern.compile("^[0-9]{10}$");
 		
 		//Validación del tipo de teléfono
 		System.out.println("-- Ingrese el tipo de teléfono: Móvil (m) / Fijo (f) --");
 		tipo = sc.next().toLowerCase().charAt(0);
-		while (!patTipo.matcher(String.valueOf(tipo)).matches()) { 
+		while (!regexTipo.matcher(String.valueOf(tipo)).matches()) { 
 			System.out.println("-- Error: Ingrese un tipo válido (m) o (f)");
 			tipo = sc.next().toLowerCase().charAt(0); 
 		}
@@ -37,7 +37,7 @@ public class UsaAgenda {
 		//Validación del prefijo 
 		System.out.println("-- Ingrese el prefijo (2 dígitos) --");
 		prefijo = sc.nextLine();
-		while (!patPrefijo.matcher(prefijo).matches()) {
+		while (!regexPrefijo.matcher(prefijo).matches()) {
 			System.out.println("-- Error: Ingrese un prefijo de 2 dígitos --"); 
 			prefijo = sc.nextLine();
 		}
@@ -45,7 +45,7 @@ public class UsaAgenda {
 		//Validación del número de teléfono
 		System.out.println("-- Ingrese el número de teléfono (10 dígitos) --");
 		numeroTel = sc.nextLine();
-		while (!patNumeroTel.matcher(numeroTel).matches()) {
+		while (!regexNumeroTel.matcher(numeroTel).matches()) {
 			System.out.println("-- Error: Ingrese un número de 10 dígitos --"); 
 			numeroTel = sc.nextLine();
 		}
@@ -78,9 +78,9 @@ public class UsaAgenda {
 	public static void main(String[] args) {
 		// Expresiones regulares
 		// Tipo de teléfono (móvil o fijo)
-		Pattern pTipoTelefono = Pattern.compile("^[mf]$");
+		Pattern regexTipoTelefono = Pattern.compile("^[mf]$");
 		// Si o No
-		Pattern pDecision = Pattern.compile("^[SN]$");		
+		Pattern regexDecision = Pattern.compile("^[SN]$");		
 
 		Scanner sc = new Scanner(System.in);
 		// Valores iniciales para la agenda
@@ -130,7 +130,7 @@ public class UsaAgenda {
 				tipo = sc.next().toLowerCase().charAt(0);
 				
 				//Validación del tipo de teléfono
-				while (pTipoTelefono.matcher(String.valueOf(tipo)).matches()) { 
+				while (regexTipoTelefono.matcher(String.valueOf(tipo)).matches()) { 
 					sc.next(); 
 					tipo = sc.next().toLowerCase().charAt(0); 
 				}
@@ -179,7 +179,7 @@ public class UsaAgenda {
 				
 				// Valida que el usuario ingrese una decisión correcta (S o N), si no, no avanza
 				// el programa
-				while (!pDecision.matcher(op).matches()) {
+				while (!regexDecision.matcher(op).matches()) {
 					System.out.println("Ingrese un valor correcto (S)/(N)");
 					op = sc.nextLine().toUpperCase();
 				}

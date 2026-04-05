@@ -19,7 +19,7 @@ public class Persona {
 	protected char sexo;
 	// Estático porque no necesita ser creado con cada objeto, no cambia
 	// Expresión regular: sólo 1 caracter que sea H o M 
-	private static final Pattern pSexo = Pattern.compile("^[HM]$");
+	private static final Pattern regexSexo = Pattern.compile("^[HM]$");
 	
 	//Constructor
 	public Persona(String nombre, String apellidos, String alias, char sexo) {
@@ -31,7 +31,7 @@ public class Persona {
 	//Método auxiliar para validar el sexo
 	// Es estática porque no se necesita que sea única por objeto
 	public static boolean validarSexo(char sexo) {
-		return (pSexo.matcher(String.valueOf(sexo)).matches());
+		return (regexSexo.matcher(String.valueOf(sexo)).matches());
 	}
 	//Getters y setters
 	public String getNombre() {

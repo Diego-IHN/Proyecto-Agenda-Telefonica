@@ -30,7 +30,7 @@ public class Contacto extends Persona {
 	 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
 	 * 8.- Fin de la cadena
 	 */
-	private static final Pattern pCorreo = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
+	private static final Pattern regexCorreo = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
 	//Constructor
 	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
 			List<Telefono> telefonos) {
@@ -44,7 +44,7 @@ public class Contacto extends Persona {
 	}
 	public void setCorreo(String correo) {
 		// Usa la expresión regular
-		if (correo != null && pCorreo.matcher(correo).matches()) { 
+		if (correo != null && regexCorreo.matcher(correo).matches()) { 
 			this.correo = correo;
 		} 
 		else {
@@ -65,7 +65,7 @@ public class Contacto extends Persona {
 		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
 		 * 8.- Fin de la cadena
 		 */
-		boolean verificado = pCorreo.matcher(correo).matches();
+		boolean verificado = regexCorreo.matcher(correo).matches();
 		// Regresa si el correo cumple con la expresión regular
 		return verificado;
 	}
