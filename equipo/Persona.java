@@ -1,9 +1,5 @@
 package equipo;
-
-import java.util.regex.Pattern;
-
 /*
- * 16/03/2026
  * Asignatura: POO (Programación Orientada a Objetos)
  * Unidad 3: Proyecto en equipo
  * Clase: Persona
@@ -23,13 +19,9 @@ public class Persona {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.alias = alias;
-		this.sexo = sexo;
+		setSexo(sexo);
 	}
-	public static boolean validarSexo(char sexo) {
-		// Expresión regular: sólo 1 caracter que sea H o M 
-		Pattern pattern = Pattern.compile("^[HM]$");
-		return (pattern.matcher(String.valueOf(sexo)).matches());
-	}
+	
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
@@ -53,7 +45,7 @@ public class Persona {
 		return sexo;
 	}
 	public void setSexo(char sexo) {
-		this.sexo = sexo;
+		this.sexo = Character.toUpperCase(sexo);
 	}
 	
 	//Método toString
