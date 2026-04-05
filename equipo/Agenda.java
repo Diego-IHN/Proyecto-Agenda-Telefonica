@@ -1,4 +1,4 @@
-package general;
+package equipo;
 /*
  * Asignatura: POO (Programación Orientada a Objetos)
  * Unidad 3: Proyecto en equipo
