@@ -18,6 +18,19 @@ public class Contacto extends Persona {
 	//Atributos
 	private String correo;
 	private List<Telefono> telefonos;
+	// Para no crear el pattern con cada Contacto nuevo
+	/*
+	 * Expresión regular que valida (por partes):
+	 * 1.- Inicio de la cadena
+	 * 2.- Puede tener letras, números, puntos y guiones
+	 * 3.- Un arroba
+	 * 4.- Nuevamente letras, números, puntos y guiones
+	 * 5.- Un punto
+	 * 6.- 2 o 3 letras minúsculas
+	 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
+	 * 8.- Fin de la cadena
+	 */
+	private static final Pattern pCorreo = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
 	//Constructor
 	public Contacto(String nombre, String apellidos, String alias, char sexo, String correo,
 			List<Telefono> telefonos) {
@@ -30,6 +43,17 @@ public class Contacto extends Persona {
 		return correo;
 	}
 	public void setCorreo(String correo) {
+		// Usa la expresión regular
+		if (correo != null && pCorreo.matcher(correo).matches()) { 
+			this.correo = correo;
+		} 
+		else {
+			System.out.println("-- ERROR: CORREO INVÁLIDO --"); 
+		}
+	}
+	//Método auxiliar para validar correo
+	// Es estática porque no es necesario que sea única para cada objeto
+	public static boolean validarCorreo(String correo) {
 		/*
 		 * Expresión regular que valida (por partes):
 		 * 1.- Inicio de la cadena
@@ -41,13 +65,9 @@ public class Contacto extends Persona {
 		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
 		 * 8.- Fin de la cadena
 		 */
-		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
-		if (correo != null && p.matcher(correo).matches()) { 
-			this.correo = correo;
-		} 
-		else {
-			System.out.println("-- ERROR: CORREO INVÁLIDO --"); 
-		}
+		boolean verificado = pCorreo.matcher(correo).matches();
+		// Regresa si el correo cumple con la expresión regular
+		return verificado;
 	}
 	public List<Telefono> getTelefonos() {
 		return telefonos;
