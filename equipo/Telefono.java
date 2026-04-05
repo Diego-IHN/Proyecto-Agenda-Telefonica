@@ -17,6 +17,13 @@ public class Telefono {
 	//Atributos
 	private char tipo;
 	private String prefijo, numTel;
+	// Expresiones regulares, estáticas porque no necesitan ser exclusivas de un objeto
+	// Expresión que pregunta si es móvil (m) o fijo (f)
+	private static final Pattern pTipoTelefono = Pattern.compile("^[mf]$");
+	//Que sean sólo dos ({2}) dígitos ([0-9]) de principio (^) a fin ($)
+	private static final Pattern pPrefijo = Pattern.compile("^[0-9]{2}$");
+	// Que sean sólo 10 dígitos
+	private static final Pattern pNumTel = Pattern.compile("^[0-9]{10}$");
 	
 	//Constructor, reutiliza los métodos setters para simplificar código
 	public Telefono(char tipo, String prefijo, String numTel) {
@@ -31,8 +38,8 @@ public class Telefono {
 	}
 	//Setter con validación de tipo de teléfono móvil (m) y fijo (f)
 	public void setTipo(char tipo) {
-		Pattern p = Pattern.compile("^[mf]$");
-		if (p.matcher(String.valueOf(tipo)).matches()) { 
+		
+		if (pTipoTelefono.matcher(String.valueOf(tipo)).matches()) { 
 			this.tipo = tipo;
 		}
 		else {
@@ -44,9 +51,7 @@ public class Telefono {
 	}
 	//Setter con validación de prefijo (valida que no esté vacío y que contenga únicamente dos dígitos)
 	public void setPrefijo(String prefijo) {
-		//Que sean SÓLO dos ({2}) dígitos ([0-9]) de principio (^) a fin ($)
-		Pattern p = Pattern.compile("^[0-9]{2}$");
-		if (prefijo != null && p.matcher(prefijo).matches()) { 
+		if (prefijo != null && pPrefijo.matcher(prefijo).matches()) { 
 			this.prefijo = prefijo; 
 		}
 		else {
@@ -58,9 +63,9 @@ public class Telefono {
 	}
 	//Setter con validación del número de teléfono (valida que no esté vacío y que contenga única y exclusivamente 10 dígitos)
 	public void setNumTel(String numTel) {
-		// SÓLO 10 dígitos
-		Pattern p = Pattern.compile("^[0-9]{10}$");
-		if (numTel != null && numTel.matches("\\d{10}")) { this.numTel = numTel;}
+		if (pNumTel.matcher(numTel).matches()) { 
+			this.numTel = numTel;
+		}
 		else {
 			this.numTel = "0000000000";
 		}

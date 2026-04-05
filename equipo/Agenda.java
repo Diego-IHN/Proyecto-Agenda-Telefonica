@@ -11,9 +11,6 @@ package equipo;
  * Didier Montoya Samaniego 25170896
  */
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Agenda {
 	private ArrayList<Contacto> agenda;
@@ -39,7 +36,7 @@ public class Agenda {
 			}
 		}
 	}
-	// Método auxiliar para ordenar la agenda
+	// Método auxiliar para ordenar la agenda (puntos extras)
 	public void ordenarAgenda() {
 		// Ordena la agenda comparando los alias, si la comparación es positiva
 		// significa que c2 va antes, si es negativa, c1 va antes
@@ -92,30 +89,7 @@ public class Agenda {
 		}
 		return false;
 	}
-	//Método auxiliar para validar el sexo
-	public boolean validarSexo(char sexo) {
-		// Expresión regular: sólo 1 caracter que sea H o M 
-		Pattern pattern = Pattern.compile("^[HM]$");
-		return (pattern.matcher(String.valueOf(sexo)).matches());
-	}
-	//Método auxiliar para validar correo
-	public boolean validarCorreo(String correo) {
-		/*
-		 * Expresión regular que valida (por partes):
-		 * 1.- Inicio de la cadena
-		 * 2.- Puede tener letras, números, puntos y guiones
-		 * 3.- Un arroba
-		 * 4.- Nuevamente letras, números, puntos y guiones
-		 * 5.- Un punto
-		 * 6.- 2 o 3 letras minúsculas
-		 * 7.- Extensiones (el * significa que puede aparecer 0 o más veces en la cadena)
-		 * 8.- Fin de la cadena
-		 */
-		Pattern p = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,3}(\\.[a-z]{2,3})*$");
-		boolean verificado = p.matcher(correo).matches();
-		// Regresa si el correo cumple con la expresión regular
-		return verificado;
-	}
+	// Método auxiliar que ayuda a verificar que un correo no aparezca en otro contacto
 	public boolean coincideCorreo(String correo) {
 		// Regresa si el correo ya pertenece a otro contacto
 		boolean coincide = false;

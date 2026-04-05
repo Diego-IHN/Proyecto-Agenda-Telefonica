@@ -53,24 +53,57 @@ public class UsaAgenda {
 		return new Telefono(tipo, prefijo, numeroTel);
 	}
 	
+	// Como se usa varias veces este trozo de código (exactamente igual) se hizo mejor una función
+	// para ahorrar líneas de código
+	public static String revisarCorreo(Agenda miAgenda, String correoInicial, Scanner sc) {
+		String correo = correoInicial;
+		boolean coincide = miAgenda.coincideCorreo(correo);
+		boolean verificar = Contacto.validarCorreo(correo);
+		// Valida que el correo esté en un formato correcto o que no esté en otro contacto
+		while(!verificar || coincide) {
+			if (!verificar) {						
+				System.out.println("-- Error: Ingresó un correo con un formato incorrecto --");
+			}
+			if (coincide) {
+				System.out.println("-- Error: El correo ingresado ya pertenece a otro contacto --");
+			}
+			System.out.println("-- Ingrese nuevamente el correo --");
+			correo = sc.nextLine();
+			coincide = miAgenda.coincideCorreo(correo);
+			verificar = Contacto.validarCorreo(correo);					
+		}
+		return correo;
+	}
+	
 	public static void main(String[] args) {
+		// Expresiones regulares
+		// Tipo de teléfono (móvil o fijo)
+		Pattern pTipoTelefono = Pattern.compile("^[mf]$");
+		// Si o No
+		Pattern pDecision = Pattern.compile("^[SN]$");		
+
 		Scanner sc = new Scanner(System.in);
-		// Valores de prueba para la agenda, eliminarlos al final
+		// Valores iniciales para la agenda
 		Telefono t1 = new Telefono('m', "52", "6671257890");
 		Telefono t2 = new Telefono('f', "52", "6516513187");
-		Contacto c1 = new Contacto("Luis", "Vea", "luve", 'M', "luve@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
+		Contacto c1 = new Contacto("Alejandra", "Pérez", "ale", 'M', "ale@gmail.com", new ArrayList<Telefono>(List.of(t1, t2)));
 		Telefono t3 = new Telefono('m', "52", "1651315848");
 		Contacto c2 = new Contacto("Pepe", "Ernesto", "peps", 'M', "pepe@gmail.com", new ArrayList<Telefono>(List.of(t3)));
+		
 		// Dejar vacíos los paréntesis finales, es de prueba
 		ArrayList<Contacto> datosPredeterminados = new ArrayList<>(List.of(c1, c2));
 		Agenda miAgenda = new Agenda(datosPredeterminados);
+		
 		// Como inicia con datos, esto es para que inicie ordenada
 		miAgenda.ordenarAgenda();
+		
 		// Para que el programa permita hacer múltiples elecciones
 		while (true) {			
 			int eleccion;
 			char tipo, sexo;
 			String alias, prefijo, numeroTel, correo, nombre, apellidos;
+			
+			// Se muestra el menú
 			System.out.println("--- Bienvenido a las operaciones disponibles. Elige una: ---"
 					+ "\n1.- Imprimir todos los datos de la Agenda"
 					+ "\n2.- Imprimir un listado de contactos por tipo de teléfono"
@@ -82,72 +115,75 @@ public class UsaAgenda {
 					+ "\n8.- Consultar una persona (por nombre o por alias)"
 					+ "\n9.- Salir");
 			
+			// Sólo se avanza si el usuario ingresó un número
 			while (!sc.hasNextInt()) {sc.next();}
 			eleccion = sc.nextInt();
 			sc.nextLine();
-			//Imprimir todos los datos de la Agenda
+			
+			// Opción 1: Imprimir todos los datos de la Agenda
 			if (eleccion == 1) {
 				System.out.println(miAgenda);
 				System.out.println();
-			//Imprimir un listado de contactos por tipo de teléfono
+			// Opción 2: Imprimir un listado de contactos por tipo de teléfono
 			} else if (eleccion == 2) {
-				Pattern p = Pattern.compile("^[mf]$");
 				System.out.println("Escoja el tipo de teléfono: Móvil (m)/ Fijo (f)");
 				tipo = sc.next().toLowerCase().charAt(0);
+				
 				//Validación del tipo de teléfono
-				while (p.matcher(String.valueOf(tipo)).matches()) { 
+				while (pTipoTelefono.matcher(String.valueOf(tipo)).matches()) { 
 					sc.next(); 
 					tipo = sc.next().toLowerCase().charAt(0); 
 				}
+				
 				miAgenda.imprimirListadoDeContactosPorTipoDeTelefono(tipo);
 				System.out.println();
-			//Agregar una persona a la agenda
+			// Opción 3: Agregar una persona a la agenda
 			} else if (eleccion == 3) {
 				System.out.println("-- Ingrese su nombre --");
 				nombre = sc.nextLine();
+				
 				System.out.println("-- Ingrese sus apellidos --");
 				apellidos = sc.nextLine();
+				
 				System.out.println("-- Ingrese su alias --");
 				alias = sc.nextLine();
+				
 				// Si ya existe el alias entonces se vuelve a pedir que se ingrese
 				while(miAgenda.validarAlias(alias)) { 
 					System.out.println("-- Error: El alias ya está registrado en otro contacto, ingrese uno nuevo --"); 
 					alias = sc.nextLine(); 
 				}
+				
 				System.out.println("-- Ingrese su sexo (H) o (M) --");
 				sexo = sc.nextLine().toUpperCase().charAt(0);
+				
 				// Valida que el sexo sea de un caracter válido (H o M)
-				while(!miAgenda.validarSexo(sexo)) {
+				while(!(Persona.validarSexo(sexo))) {
 					System.out.println("-- Error: Ingresó un sexo incorrecto, elija (H) o (M) --");
 					sexo = sc.nextLine().toUpperCase().charAt(0);
 				}
+				
 				System.out.println("-- Ingrese su correo --");
 				correo = sc.nextLine();
-				boolean coincide = miAgenda.coincideCorreo(correo);
-				boolean verificar = miAgenda.validarCorreo(correo);
-				// Valida que el correo esté en un formato correcto o que no esté en otro contacto
-				while(!verificar || coincide) {
-					if (!verificar) {						
-						System.out.println("-- Error: Ingresó un correo con un formato incorrecto --");
-					}
-					if (coincide) {
-						System.out.println("-- Error: El correo ingresado ya pertenece a otro contacto --");
-					}
-					System.out.println("-- Ingrese nuevamente el correo --");
-					correo = sc.nextLine();
-					coincide = miAgenda.coincideCorreo(correo);
-					verificar = miAgenda.validarCorreo(correo);					
-				}
+				
+				// Se verifica que el correo esté bien (no sea repetido y cumpla con
+				// la estructura correcta)
+				correo = revisarCorreo(miAgenda, correo, sc);
+				
 				ArrayList<Telefono> telefonos = new ArrayList<>();
 				Telefono t = crearTelefono(sc);				
 				telefonos.add(t);
+				
 				System.out.println("-- ¿Desea agregar más teléfonos? (S)/(N)--");
 				String op = sc.nextLine().toUpperCase();
-				Pattern p = Pattern.compile("^[SN]$");
-				while (!p.matcher(op).matches()) {
+				
+				// Valida que el usuario ingrese una decisión correcta (S o N), si no, no avanza
+				// el programa
+				while (!pDecision.matcher(op).matches()) {
 					System.out.println("Ingrese un valor correcto (S)/(N)");
 					op = sc.nextLine().toUpperCase();
 				}
+			
 				// Para continuar agregando teléfonos hasta que el usuario se detenga
 				while(op.equals("S")) {
 					Telefono tAux = crearTelefono(sc);
@@ -155,34 +191,32 @@ public class UsaAgenda {
 					System.out.println("-- ¿Desea agregar más teléfonos? (S)/(N) --");
 					op = sc.nextLine().toUpperCase();
 				}
+				
 				// Se crea el contacto
 				Contacto c = new Contacto(nombre, apellidos, alias, sexo, correo, telefonos);
+				
 				// Se agrega el contacto
 				miAgenda.agregarContacto(c);
 				System.out.println();
-			//cambiar el correo a una persona
+			// Opción 4: Cambiar el correo a una persona
 			} else if (eleccion == 4) {
 				// Se consiguen los datos
 				System.out.println("-- Ingrese el nombre del contacto --");
 				nombre = sc.nextLine();
-				while (!miAgenda.validarNombre(nombre)) { System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); nombre = sc.nextLine(); }
+				
+				// Valida el nombre hasta que haya un nombre válido
+				while (!miAgenda.validarNombre(nombre)) { 
+					System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); 
+					nombre = sc.nextLine(); 
+				}
+				
 				System.out.println("-- Ingresa el nuevo correo del contacto --");
 				correo = sc.nextLine();
-				boolean coincide = miAgenda.coincideCorreo(correo);
-				boolean verificar = miAgenda.validarCorreo(correo);
-				// Valida que el correo esté en un formato correcto o que no esté en otro contacto
-				while(!verificar || coincide) {
-					if (!verificar) {						
-						System.out.println("-- Error: Ingresó un correo con un formato incorrecto --");
-					}
-					if (coincide) {
-						System.out.println("-- Error: El correo ingresado ya pertenece a otro contacto --");
-					}
-					System.out.println("-- Ingrese nuevamente el correo --");
-					correo = sc.nextLine();
-					coincide = miAgenda.coincideCorreo(correo);
-					verificar = miAgenda.validarCorreo(correo);					
-				}
+		
+				// Se verifica que el correo esté bien (no sea repetido y cumpla con
+				// la estructura correcta)
+				correo = revisarCorreo(miAgenda, correo, sc);
+				
 				// Se cambia el correo
 				miAgenda.cambiarCorreo(nombre, correo);
 				System.out.println();
@@ -191,62 +225,87 @@ public class UsaAgenda {
 				// Se obtiene de forma aparte el alias
 				System.out.println("-- Ingrese el alias del contacto --");
 				alias = sc.nextLine();
+				
 				while (!miAgenda.validarAlias(alias)) { 
 					System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); 
 					System.out.println("-- Ingrese nuevamente el alias --");
 					alias = sc.nextLine(); 
 				}
+				
 				// Se consigue el teléfono y se crea
 				Telefono t = crearTelefono(sc);
 				miAgenda.agregarTelefonoAContacto(alias,t);
 				System.out.println();
-			//Eliminar un contacto
+			// Opción 6: Eliminar un contacto
 			} else if (eleccion == 6) {
 				// Obteniendo los datos a buscar
 				System.out.println("-- Ingrese el correo del usuario a eliminar --");
 				correo = sc.nextLine();
-				while (!miAgenda.validarCorreo(correo)) {
+				
+				// Si el correo no es válido se repite hasta que lo sea
+				while (!(Contacto.validarCorreo(correo))) {
 					System.out.println("-- Ingrese un correo válido --");
 					correo = sc.nextLine();
 				}
+				
 				// Se elimina el contacto
 				miAgenda.eliminarContacto(correo);
 				System.out.println();
-			//Eliminar el teléfono de un contacto
+			// Opción 7: Eliminar el teléfono de un contacto
 			} else if (eleccion == 7) {
 				// Se obtiene el alias
 				System.out.println("-- Ingrese el alias del contacto --");
 				alias = sc.nextLine();
-				while (!miAgenda.validarAlias(alias)) { System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); alias = sc.nextLine(); }
+				
+				while (!miAgenda.validarAlias(alias)) { 
+					System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); 
+					alias = sc.nextLine(); 
+				}
+				
 				// Se obtiene el teléfono y se elimina el teléfono del contacto
 				Telefono t = crearTelefono(sc);
 				miAgenda.eliminarTelefonoContacto(alias, t);
 				System.out.println();
-			//Consultar una persona (por nombre o por alias)
+			// Opción 8: Consultar una persona (por nombre o por alias)
 			} else if (eleccion == 8) {
 				System.out.println("¿Desea buscar por alias o por nombre?"
 						+ "\n1.- Alias"
 						+ "\n2.- Nombre");
 				int op = sc.nextInt();
+				// Lee el buffer del \n
 				sc.nextLine();
+				
+				// Caso de consulta por alias
 				if (op == 1) {
-					// Caso de consulta por alias
 					System.out.println("-- Ingrese el alias del contacto --");
 					alias = sc.nextLine();
-					while (!miAgenda.validarAlias(alias)) { System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); alias = sc.nextLine(); }
+					
+					// Valida el alias
+					while (!miAgenda.validarAlias(alias)) { 
+						System.out.println("-- Error: No se encontró ningún contacto con el alias ingresado --"); 
+						alias = sc.nextLine(); 
+					}
+					
 					miAgenda.consultarPersona(alias);
+				// Caso de consulta por nombre
 				} else if (op == 2) {
-					// Caso de consulta por nombre
 					System.out.println("-- Ingrese el nombre del contacto --");
 					nombre = sc.nextLine();
-					while (!miAgenda.validarNombre(nombre)) { System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); nombre = sc.nextLine(); }
+					
+					// Valida el nombre
+					while (!miAgenda.validarNombre(nombre)) { 
+						System.out.println("-- Error: No se encontró ningún contacto con el nombre ingresado --"); 
+						nombre = sc.nextLine(); 
+					}
+					
 					miAgenda.consultarPersona(nombre);
+				// Caso default en que el usuario no elige ninguna opción válida
 				} else {
-					// Caso default en que el usuario no elige ninguna opción válida
 					System.out.println("Ingrese una opción válida");
 				}
+				
 				System.out.println();
-			//Salir
+			// Opción 9: Salir
 			} else if (eleccion == 9) {
 				break;
 			//Entrada inválida
